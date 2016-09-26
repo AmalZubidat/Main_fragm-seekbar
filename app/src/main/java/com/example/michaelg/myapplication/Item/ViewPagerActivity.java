@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.example.michaelg.myapplication.Fragments.Params;
 import com.example.michaelg.myapplication.Item.discreteseekbar.DiscreteSeekBar;
 import com.example.michaelg.myapplication.R;
 import com.example.michaelg.myapplication.Item.zoomable.ZoomableDraweeView;
@@ -40,13 +41,14 @@ import java.util.List;
 public class ViewPagerActivity extends AppCompatActivity{
     List<String> pagesStr = new ArrayList<String>();
     private String ID = "NNL_ALEPH003157499";
+    private String userId= "100";
     private ViewItemTask mAuthTask = null;
     int i = 0;
     int j = 0;
     ViewPager vpGallery;
     EditText etchange;
     TextView textView1;
-
+    DiscreteSeekBar discreteSeekBar1;
 
 
     public void bookinfo(View v){
@@ -75,7 +77,7 @@ public class ViewPagerActivity extends AppCompatActivity{
         setContentView(R.layout.activity_view_pager);
         etchange =(EditText)findViewById(R.id.et_changepage);
         textView1=(TextView) findViewById(R.id.textView);
-        DiscreteSeekBar discreteSeekBar1 = (DiscreteSeekBar) findViewById(R.id.discrete3);
+         discreteSeekBar1 = (DiscreteSeekBar) findViewById(R.id.discrete3);
         discreteSeekBar1.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
             @Override
             public int transform(int value) {
@@ -85,7 +87,7 @@ public class ViewPagerActivity extends AppCompatActivity{
 
         Intent intent = getIntent();
         // ID = intent.getStringExtra("recordID");
-        mAuthTask = new ViewItemTask(ID);
+        mAuthTask = new ViewItemTask(ID,userId);
         mAuthTask.execute((Void) null);
 
     }
@@ -100,9 +102,11 @@ public class ViewPagerActivity extends AppCompatActivity{
     public class ViewItemTask extends AsyncTask<Void, Void, JSONObject> {
 
         private final String bookId;
+        private final String userId;
 
-        ViewItemTask(String bookId) {
+        ViewItemTask(String bookId,String userId) {
             this.bookId = bookId;
+            this.userId=userId;
         }
 
         @Override
@@ -120,19 +124,22 @@ public class ViewPagerActivity extends AppCompatActivity{
 
             try {
                 final String SERVER_BASE_URL =
-                        "http://iiif.nli.org.il/IIIF/DOCID/NNL_ALEPH003157499/manifest";
+                        Params.getServer() +"search/bookquery?";
+                // "search/bookquery/userId/recordId
                 //TODO: change according to the server function format
-//               final String ID_PARAM = "recordID";
-//
-//                Uri builtUri = Uri.parse(SERVER_BASE_URL).buildUpon()
-//                        .appendQueryParameter(ID_PARAM, bookId)
-//                        .build();
-//
-//                URL url = new URL(builtUri.toString());
+               final String ID_PARAM = "recordId";
+                final String USER_PARAM ="userId";
+
+              Uri builtUri = Uri.parse(SERVER_BASE_URL).buildUpon()
+                       .appendQueryParameter(ID_PARAM, bookId).appendQueryParameter(USER_PARAM,userId).build();
+//Uri builtUri = Uri.parse(SERVER_BASE_URL).buildUpon()
+//                        .appendQueryParameter(ID_PARAM, bookId).appendQueryParameter(USER_PARAM,100+"").build();
+
+                URL url = new URL(builtUri.toString());
 //
 
-                // Log.v("URL", builtUri.toString());
-                URL url = new URL(SERVER_BASE_URL);
+                Log.v("URL", builtUri.toString());
+             //   URL url = new URL(SERVER_BASE_URL);
                 //Log.v("URL", builtUri.toString());
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.connect();
@@ -198,10 +205,10 @@ public class ViewPagerActivity extends AppCompatActivity{
 
             JSONArray pages3 = null;
             try {
-                pages3 = success.getJSONArray("structures");
+                pages = success.getJSONArray("pages");
 
-                JSONObject page2 = pages3.getJSONObject(0);
-                pages = page2.getJSONArray("canvases");
+               // JSONObject page2 = pages3.getJSONObject(0);
+              //  pages = page2.getJSONArray("canvases");
 
                 // JSONObject object = pages.getJSONObject(0);
                 //JSONObject object1 = pages.getJSONObject(pages.length() - 1);
@@ -209,7 +216,7 @@ public class ViewPagerActivity extends AppCompatActivity{
                 String first = "http://iiif.nli.org.il/IIIF/";
                 String last = "/full/full/0/default.jpg";
                 String tmp = "";
-                for (int i = 0; i < pages.length(); i++) {
+                for (int i = 1; i < pages.length()-1; i++) {
 
                     String  book = pages.getString(i);
                     tmp = first +book + last;

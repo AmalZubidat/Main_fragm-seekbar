@@ -1,4 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -88,9 +90,7 @@
     </FrameLayout>
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
         android:layout_width="414dp"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -103,7 +103,24 @@
         >
 
 
+        <com.example.michaelg.myapplication.Item.discreteseekbar.DiscreteSeekBar
+            android:id="@+id/discrete3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dsb_min="1"
+            app:dsb_max="1000"
+            app:dsb_indicatorFormatter="%04d"/>
 
+        <!--<org.adw.library.widgets.discreteseekbar.DiscreteSeekBar-->
+            <!--android:id="@+id/discrete3"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:dsb_allowTrackClickToDrag="false"-->
+            <!--app:dsb_indicatorTextAppearance="@style/CustomFloaterTextAppearance"-->
+            <!--app:dsb_progressColor="@color/my_progress_color"-->
+            <!--app:dsb_rippleColor="#FF7788FF"-->
+            <!--app:dsb_indicatorColor="@color/my_floater_color"-->
+            <!--app:dsb_indicatorFormatter="\\o/ %d"/>-->
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -111,13 +128,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
-                    android:id="@+id/discrete3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:dsb_min="1"
-                    app:dsb_max="1000"
-                    app:dsb_indicatorFormatter="%04d"/>
 
             </LinearLayout>
         </ScrollView>
